@@ -27,6 +27,9 @@ dependencies {
     // logging facade
     implementation "org.slf4j:slf4j-api:2.1.0-alpha1"
 
+    // https://mvnrepository.com/artifact/io.vavr/vavr
+    implementation 'io.vavr:vavr:1.0.0-alpha-4'
+
     implementation 'io.github.vorobii-vitalii:resp-netty:1.0.0'
 
 }
