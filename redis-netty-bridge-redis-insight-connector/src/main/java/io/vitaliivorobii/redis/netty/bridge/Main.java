@@ -4,7 +4,9 @@ import io.vitaliivorobii.redis.netty.bridge.command.impl.CommandNameDelegatingCo
 import io.vitaliivorobii.redis.netty.bridge.command.impl.GenericCommandFactory;
 import io.vitaliivorobii.redis.netty.bridge.command.impl.NullCommand;
 import io.vitaliivorobii.redis.netty.bridge.command.parser.GetCommandArgsParser;
+import io.vitaliivorobii.redis.netty.bridge.command.parser.LRangeArgsParser;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.command.RedisInsightProxyGetCommandStrategy;
+import io.vitaliivorobii.redis.netty.bridge.redis.insight.command.RedisInsightProxyLRangeCommandStrategy;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.dto.DatabaseKey;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.impl.HttpDatabaseIdProvider;
 import io.vitaliivorobii.redis.netty.bridge.server.RedisNettyBridge;
@@ -28,6 +30,18 @@ public class Main {
                 new CommandNameDelegatingCommandFactory(Map.of(
                         "GET", new GenericCommandFactory<>(new GetCommandArgsParser(), List.of(
                                 new RedisInsightProxyGetCommandStrategy(
+                                        Pattern.compile("^(.*)$"),
+                                        new DatabaseKey(
+                                                "redis-12333.c232.us-east-1-2.ec2.redns.redis-cloud.com:12333",
+                                                null
+                                        ),
+                                        new HttpDatabaseIdProvider(httpClient, redisInsightBaseURI),
+                                        redisInsightBaseURI,
+                                        httpClient
+                                )
+                        ), NullCommand::new),
+                        "LRANGE", new GenericCommandFactory<>(new LRangeArgsParser(), List.of(
+                                new RedisInsightProxyLRangeCommandStrategy(
                                         Pattern.compile("^(.*)$"),
                                         new DatabaseKey(
                                                 "redis-12333.c232.us-east-1-2.ec2.redns.redis-cloud.com:12333",

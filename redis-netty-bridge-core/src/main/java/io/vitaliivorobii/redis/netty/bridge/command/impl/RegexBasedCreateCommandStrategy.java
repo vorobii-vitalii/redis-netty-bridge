@@ -26,12 +26,12 @@ public abstract class RegexBasedCreateCommandStrategy<A> implements CreateComman
             return Optional.empty();
         }
         int numVariables = matcher.groupCount();
-        String[] args = new String[numVariables];
+        String[] parsedArgs = new String[numVariables];
         for (int i = 0; i < numVariables; i++) {
-            args[i] = matcher.group(i + 1);
+            parsedArgs[i] = matcher.group(i + 1);
         }
-        return Optional.of(createCommand(channelContext, args));
+        return Optional.of(createCommand(channelContext, parsedArgs, arguments));
     }
 
-    public abstract RedisCommand createCommand(ChannelHandlerContext context, String[] args);
+    public abstract RedisCommand createCommand(ChannelHandlerContext context, String[] textArgs, A arguments);
 }
