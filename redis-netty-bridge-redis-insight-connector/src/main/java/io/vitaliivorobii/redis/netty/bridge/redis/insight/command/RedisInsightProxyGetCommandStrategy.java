@@ -3,40 +3,31 @@ package io.vitaliivorobii.redis.netty.bridge.redis.insight.command;
 import io.netty.channel.ChannelHandlerContext;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
 import io.vitaliivorobii.redis.netty.bridge.command.impl.RegexBasedCreateCommandStrategy;
-import io.vitaliivorobii.redis.netty.bridge.redis.insight.DatabaseIdProvider;
+import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.StringValueFetcher;
+import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.dto.StringValueFetchRequest;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.dto.DatabaseKey;
 
-import java.net.URI;
-import java.net.http.HttpClient;
 import java.util.regex.Pattern;
 
 public class RedisInsightProxyGetCommandStrategy extends RegexBasedCreateCommandStrategy<String> {
+    private final StringValueFetcher stringValueFetcher;
     private final DatabaseKey databaseKey;
-    private final DatabaseIdProvider databaseIdProvider;
-    private final URI redisInsightApiBaseUri;
-    private final HttpClient httpClient;
 
     public RedisInsightProxyGetCommandStrategy(
             Pattern keyPattern,
-            DatabaseKey databaseKey,
-            DatabaseIdProvider databaseIdProvider,
-            URI redisInsightApiBaseUri,
-            HttpClient httpClient
+            StringValueFetcher stringValueFetcher,
+            DatabaseKey databaseKey
     ) {
         super(v -> v, keyPattern);
+        this.stringValueFetcher = stringValueFetcher;
         this.databaseKey = databaseKey;
-        this.databaseIdProvider = databaseIdProvider;
-        this.redisInsightApiBaseUri = redisInsightApiBaseUri;
-        this.httpClient = httpClient;
     }
 
     @Override
     public RedisCommand createCommand(ChannelHandlerContext context, String[] args, String fullKey) {
         return new DownloadStringValueCommand(
-                redisInsightApiBaseUri,
-                httpClient,
-                databaseIdProvider.getDatabaseId(databaseKey),
-                fullKey,
+                stringValueFetcher,
+                new StringValueFetchRequest(fullKey, databaseKey),
                 context
         );
     }

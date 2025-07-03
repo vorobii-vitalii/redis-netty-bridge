@@ -10,7 +10,6 @@ import io.vitaliivorobii.redis.netty.bridge.domain.ClientRequest;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class GenericCommandFactory<A> implements RedisCommandFactory {
     private final CommandArgumentsParser<A> argumentsParser;
@@ -35,7 +34,7 @@ public class GenericCommandFactory<A> implements RedisCommandFactory {
             return strategies.stream()
                     .flatMap(v -> v.createIfApplicable(channelContext, arguments).stream())
                     .findFirst()
-                    .orElseGet(() ->  defaultCommandSupplier.apply(channelContext));
+                    .orElseGet(() -> defaultCommandSupplier.apply(channelContext));
         }
         return new ErrorCommand(channelContext, parseResult.get());
     }

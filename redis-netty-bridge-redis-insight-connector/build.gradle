@@ -40,6 +40,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common
     implementation 'org.glassfish.jersey.core:jersey-common:4.0.0-M2'
 
+    implementation 'io.vavr:vavr:1.0.0-alpha-4'
+
     implementation 'io.github.vorobii-vitalii:resp-netty:1.0.0'
 }
 

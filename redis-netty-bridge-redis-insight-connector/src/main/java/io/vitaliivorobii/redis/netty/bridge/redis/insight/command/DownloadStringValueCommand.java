@@ -1,77 +1,44 @@
 package io.vitaliivorobii.redis.netty.bridge.redis.insight.command;
 
-import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
+import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.StringValueFetcher;
+import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.dto.StringValueFetchRequest;
 import io.vitaliivorobii.resp.types.RespBulkString;
+import io.vitaliivorobii.resp.types.RespDataType;
 import io.vitaliivorobii.resp.types.RespNull;
 import io.vitaliivorobii.resp.types.RespSimpleError;
-import jakarta.ws.rs.core.UriBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Map;
-import java.util.concurrent.CompletionStage;
-
 public class DownloadStringValueCommand implements RedisCommand {
     private static final Logger log = LoggerFactory.getLogger(DownloadStringValueCommand.class);
-    private final URI redisInsightApiBaseUri;
-    private final HttpClient httpClient;
-    private final CompletionStage<String> databaseIdFuture;
-    private final String key;
-    private final Gson gson = new Gson();
+
+    private final StringValueFetchRequest stringValueFetchRequest;
+    private final StringValueFetcher stringValueFetcher;
     private final ChannelHandlerContext channelHandlerContext;
 
     public DownloadStringValueCommand(
-            URI redisInsightApiBaseUri,
-            HttpClient httpClient,
-            CompletionStage<String> databaseIdFuture,
-            String key,
+            StringValueFetcher stringValueFetcher,
+            StringValueFetchRequest stringValueFetchRequest,
             ChannelHandlerContext channelHandlerContext
     ) {
-        this.redisInsightApiBaseUri = redisInsightApiBaseUri;
-        this.httpClient = httpClient;
-        this.databaseIdFuture = databaseIdFuture;
-        this.key = key;
+        this.stringValueFetcher = stringValueFetcher;
+        this.stringValueFetchRequest = stringValueFetchRequest;
         this.channelHandlerContext = channelHandlerContext;
     }
 
     @Override
     public void execute() {
-        databaseIdFuture
-                .thenComposeAsync(dbInstance -> {
-                    HttpRequest getValueRequest = HttpRequest.newBuilder()
-                            .version(HttpClient.Version.HTTP_1_1)
-                            .uri(UriBuilder.fromUri(redisInsightApiBaseUri)
-                                    .path("/api/databases/{dbInstance}/string/download-value")
-                                    .build(dbInstance))
-                            .header("Content-Type", "application/json")
-                            .POST(HttpRequest.BodyPublishers.ofString(
-                                    gson.toJson(Map.of("keyName", key))
-                            ))
-                            .build();
-                    return httpClient.sendAsync(getValueRequest, HttpResponse.BodyHandlers.ofString());
-                })
-                .whenComplete((response, error) -> {
+        stringValueFetcher.fetchStringValue(stringValueFetchRequest)
+                .whenComplete((resp, error) -> {
                     if (error != null) {
                         log.error("Error occurred while downloading string value", error);
                         channelHandlerContext.writeAndFlush(
                                 new RespSimpleError("error on download of value"));
                     } else {
-                        if (response.statusCode() == HttpResponseStatus.OK.code()) {
-                            channelHandlerContext.writeAndFlush(new RespBulkString(response.body()));
-                        } else if (response.statusCode() == HttpResponseStatus.NOT_FOUND.code()) {
-                            channelHandlerContext.writeAndFlush(new RespNull());
-                        } else {
-                            log.error("Error occurred while downloading string value - {}", response.body());
-                            channelHandlerContext.writeAndFlush(
-                                    new RespSimpleError("error on fetch of string value"));
-                        }
+                        RespDataType redisReply = resp == null ? new RespNull() : new RespBulkString(resp);
+                        channelHandlerContext.writeAndFlush(redisReply);
                     }
                 });
     }
