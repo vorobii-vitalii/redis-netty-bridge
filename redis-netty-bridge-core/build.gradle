@@ -1,9 +1,72 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'io.vitaliivorobii.redis.netty.bridge'
 version = '1.0-SNAPSHOT'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'redis-netty-bridge-core'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'redis-netty-bridge-core'
+                description = 'Implementation of REdis Serialization Protocol(RESP) in Netty '
+                url = 'https://github.com/vorobii-vitalii/redis-netty-bridge'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'vorobii-vitalii'
+                        name = 'Vitalii Vorobii'
+                        email = 'vitalij.vorobij@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/vorobii-vitalii/redis-netty-bridge.git'
+                    developerConnection = 'scm:git:ssh://github.com/vorobii-vitalii/redis-netty-bridge.git'
+                    url = 'https://github.com/vorobii-vitalii/redis-netty-bridge'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/vorobii-vitalii/redis-netty-bridge-core"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
 
 repositories {
     mavenCentral()
