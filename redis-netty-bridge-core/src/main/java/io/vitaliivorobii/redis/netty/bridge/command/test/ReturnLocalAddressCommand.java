@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
 import io.vitaliivorobii.resp.types.RespArray;
 import io.vitaliivorobii.resp.types.RespBulkString;
 

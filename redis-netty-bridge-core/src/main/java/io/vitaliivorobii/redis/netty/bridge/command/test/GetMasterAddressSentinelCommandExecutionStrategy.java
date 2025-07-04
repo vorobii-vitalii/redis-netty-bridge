@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.vitaliivorobii.redis.netty.bridge.command.CreateCommandStrategy;
-import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
+import io.vitaliivorobii.redis.netty.bridge.command.CommandExecutionStrategy;
 
-public class GetMasterAddressSentinelCommandStrategy implements CreateCommandStrategy<List<String>> {
+public class GetMasterAddressSentinelCommandExecutionStrategy implements CommandExecutionStrategy<List<String>> {
 
 	public static final String GET_MASTER_ADDR_BY_NAME = "GET-MASTER-ADDR-BY-NAME";
 

@@ -4,10 +4,9 @@ import java.util.Optional;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.vitalii.command.SelectRedisCommand;
-import io.vitaliivorobii.redis.netty.bridge.command.CreateCommandStrategy;
-import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
+import io.vitaliivorobii.redis.netty.bridge.command.CommandExecutionStrategy;
 
-public class SelectCommandStrategy implements CreateCommandStrategy<Integer> {
+public class SelectCommandExecutionStrategy implements CommandExecutionStrategy<Integer> {
 
 	@Override
 	public Optional<RedisCommand> createIfApplicable(ChannelHandlerContext channelHandlerContext, Integer port) {

@@ -1,7 +1,6 @@
 package io.vitaliivorobii.redis.netty.bridge.redis.insight.command;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.StringValueFetcher;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.client.dto.StringValueFetchRequest;
 import io.vitaliivorobii.resp.types.RespBulkString;

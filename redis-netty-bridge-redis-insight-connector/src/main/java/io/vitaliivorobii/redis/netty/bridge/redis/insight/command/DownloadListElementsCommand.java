@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
 import io.vitaliivorobii.redis.netty.bridge.command.args.types.LRangeArgs;
 import io.vitaliivorobii.resp.types.*;
 import jakarta.ws.rs.core.UriBuilder;
