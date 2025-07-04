@@ -21,7 +21,6 @@ public class MGETCommandExecutor implements CommandExecutionStrategy<List<String
 
     @Override
     public boolean canHandle(ChannelHandlerContext channelHandlerContext, List<String> args) {
-        channelHandlerContext.at
         return true;
     }
 
@@ -36,8 +35,7 @@ public class MGETCommandExecutor implements CommandExecutionStrategy<List<String
                     // Best effort strategy
                     int n = array.length;
                     List<RespDataType> results = new ArrayList<>(n);
-                    for (int i = 0; i < n; i++) {
-                        CompletableFuture<RespDataType> future = array[i];
+                    for (CompletableFuture<RespDataType> future : array) {
                         results.add(future.getNow(new RespNull()));
                     }
                     RespArray respArray = new RespArray(results);
