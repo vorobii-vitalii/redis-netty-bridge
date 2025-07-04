@@ -1,5 +1,7 @@
 package io.vitaliivorobii.redis.netty.bridge.command;
 
+import java.util.concurrent.CompletionStage;
+
 public interface RedisCommand {
-    void execute();
+    CompletionStage<?> execute();
 }

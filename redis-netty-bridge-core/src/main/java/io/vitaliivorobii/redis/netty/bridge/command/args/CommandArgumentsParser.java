@@ -1,4 +1,4 @@
-package io.vitaliivorobii.redis.netty.bridge.command;
+package io.vitaliivorobii.redis.netty.bridge.command.args;
 
 import io.vavr.control.Either;
 import io.vitaliivorobii.redis.netty.bridge.domain.ClientRequest;

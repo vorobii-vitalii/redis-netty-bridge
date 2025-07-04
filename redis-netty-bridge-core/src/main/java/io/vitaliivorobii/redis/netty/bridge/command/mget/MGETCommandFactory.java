@@ -1,4 +1,4 @@
-package io.vitaliivorobii.redis.netty.bridge.command.test;
+package io.vitaliivorobii.redis.netty.bridge.command.mget;
 
 import java.util.ArrayList;
 import java.util.List;

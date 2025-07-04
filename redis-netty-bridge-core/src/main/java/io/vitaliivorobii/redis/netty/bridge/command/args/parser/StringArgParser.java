@@ -1,12 +1,12 @@
-package io.vitaliivorobii.redis.netty.bridge.command.parser;
+package io.vitaliivorobii.redis.netty.bridge.command.args.parser;
 
 import io.vavr.control.Either;
-import io.vitaliivorobii.redis.netty.bridge.command.CommandArgumentsParser;
+import io.vitaliivorobii.redis.netty.bridge.command.args.CommandArgumentsParser;
 import io.vitaliivorobii.redis.netty.bridge.domain.ClientRequest;
 
 import java.util.List;
 
-public class GetCommandArgsParser implements CommandArgumentsParser<String> {
+public class StringArgParser implements CommandArgumentsParser<String> {
 
     @Override
     public Either<String, String> parse(ClientRequest request) {

@@ -2,7 +2,7 @@ package io.vitaliivorobii.redis.netty.bridge.redis.insight.command;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
-import io.vitaliivorobii.redis.netty.bridge.command.args.LRangeArgs;
+import io.vitaliivorobii.redis.netty.bridge.command.args.types.LRangeArgs;
 import io.vitaliivorobii.redis.netty.bridge.command.impl.RegexBasedCreateCommandStrategy;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.DatabaseIdProvider;
 import io.vitaliivorobii.redis.netty.bridge.redis.insight.dto.DatabaseKey;

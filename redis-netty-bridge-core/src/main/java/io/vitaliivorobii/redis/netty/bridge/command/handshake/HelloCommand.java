@@ -1,7 +1,8 @@
-package io.vitaliivorobii.redis.netty.bridge.command.test;
+package io.vitaliivorobii.redis.netty.bridge.command.handshake;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletionStage;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;
@@ -18,8 +19,8 @@ public class HelloCommand implements RedisCommand {
 	}
 
 	@Override
-	public void execute() {
-		context.writeAndFlush(new RespMap(Map.of(
+	public CompletionStage<?> execute() {
+		return context.writeAndFlush(new RespMap(Map.of(
 				new RespBulkString("server"), new RespBulkString("redis"),
 				new RespBulkString("version"), new RespBulkString("6.0.0"),
 				new RespBulkString("proto"), new RespInteger(3),

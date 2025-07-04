@@ -1,4 +1,4 @@
-package io.vitaliivorobii.redis.netty.bridge.command.impl;
+package io.vitaliivorobii.redis.netty.bridge.command.common;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommand;

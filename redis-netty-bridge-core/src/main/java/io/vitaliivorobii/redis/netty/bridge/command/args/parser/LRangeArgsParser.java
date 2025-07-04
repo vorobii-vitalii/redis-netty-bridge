@@ -1,8 +1,8 @@
-package io.vitaliivorobii.redis.netty.bridge.command.parser;
+package io.vitaliivorobii.redis.netty.bridge.command.args.parser;
 
 import io.vavr.control.Either;
-import io.vitaliivorobii.redis.netty.bridge.command.CommandArgumentsParser;
-import io.vitaliivorobii.redis.netty.bridge.command.args.LRangeArgs;
+import io.vitaliivorobii.redis.netty.bridge.command.args.CommandArgumentsParser;
+import io.vitaliivorobii.redis.netty.bridge.command.args.types.LRangeArgs;
 import io.vitaliivorobii.redis.netty.bridge.domain.ClientRequest;
 
 import java.util.List;
