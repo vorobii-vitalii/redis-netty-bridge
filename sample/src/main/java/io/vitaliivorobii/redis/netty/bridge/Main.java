@@ -7,6 +7,7 @@ import io.vitaliivorobii.redis.netty.bridge.command.get.GetDataStrategy;
 import io.vitaliivorobii.redis.netty.bridge.command.handshake.HelloCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.command.impl.CommandNameDelegatingCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.command.mget.MGETCommandExecutor;
+import io.vitaliivorobii.redis.netty.bridge.command.ping.PingCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.command.select.SelectCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.command.sentinel.GetMasterAddressSentinelCommandExecutionStrategy;
 import io.vitaliivorobii.redis.netty.bridge.command.sentinel.SentinelCommandExecutor;
@@ -29,6 +30,7 @@ public class Main {
         RedisCommandExecutor redisCommandExecutor = new CommandNameDelegatingCommandExecutor(Map.of(
                 "HELLO", new HelloCommandExecutor(),
                 "SELECT", new SelectCommandExecutor(),
+                "PING", new PingCommandExecutor(),
                 "GET", new GetCommandExecutor(getDataStrategy),
                 "MGET", new MGETCommandExecutor(getDataStrategy),
                 "SENTINEL", new SentinelCommandExecutor(List.of(
