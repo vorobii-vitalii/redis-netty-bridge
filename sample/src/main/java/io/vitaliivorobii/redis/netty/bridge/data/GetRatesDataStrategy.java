@@ -7,7 +7,6 @@ import io.vitaliivorobii.redis.netty.bridge.command.get.RegexGetDataStrategy;
 import io.vitaliivorobii.resp.types.RespBulkString;
 import io.vitaliivorobii.resp.types.RespDataType;
 import io.vitaliivorobii.resp.types.RespNull;
-import io.vitaliivorobii.resp.types.RespSimpleError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,13 +38,13 @@ public class GetRatesDataStrategy extends RegexGetDataStrategy {
         String fromCurrency = parsedArgs[0];
         String toCurrency = parsedArgs[1];
 
-        return httpClient.sendAsync(
-                        HttpRequest.newBuilder()
-                                .version(HttpClient.Version.HTTP_2)
-                                .GET()
-                                .uri(URI.create("https://api.exchangerate-api.com/v4/latest/" + fromCurrency))
-                                .build(),
-                        HttpResponse.BodyHandlers.ofString())
+        HttpRequest fetchRatesRequest = HttpRequest.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .GET()
+                .uri(URI.create("https://api.exchangerate-api.com/v4/latest/" + fromCurrency))
+                .build();
+
+        return httpClient.sendAsync(fetchRatesRequest, HttpResponse.BodyHandlers.ofString())
                 .thenApply((Function<HttpResponse<String>, RespDataType>) response -> {
                     log.info("Http response from rates server: {}", response);
                     if (response.statusCode() == HttpResponseStatus.OK.code()) {
