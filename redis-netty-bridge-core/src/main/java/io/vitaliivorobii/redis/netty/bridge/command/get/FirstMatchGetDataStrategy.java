@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public class DelegatingGetDataStrategy implements GetDataStrategy {
+public class FirstMatchGetDataStrategy implements GetDataStrategy {
     private final List<GetDataStrategy> getCommandStrategies;
 
-    public DelegatingGetDataStrategy(List<GetDataStrategy> getCommandStrategies) {
+    public FirstMatchGetDataStrategy(List<GetDataStrategy> getCommandStrategies) {
         this.getCommandStrategies = getCommandStrategies;
     }
 

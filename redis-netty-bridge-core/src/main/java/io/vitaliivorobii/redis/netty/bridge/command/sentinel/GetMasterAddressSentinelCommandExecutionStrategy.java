@@ -11,9 +11,9 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 public class GetMasterAddressSentinelCommandExecutionStrategy implements CommandExecutionStrategy<List<String>> {
+    private static final Logger log = LoggerFactory.getLogger(GetMasterAddressSentinelCommandExecutionStrategy.class);
 
     public static final String GET_MASTER_ADDR_BY_NAME = "GET-MASTER-ADDR-BY-NAME";
-    private static final Logger log = LoggerFactory.getLogger(GetMasterAddressSentinelCommandExecutionStrategy.class);
 
     @Override
     public boolean canHandle(ChannelHandlerContext channelHandlerContext, List<String> args) {
@@ -22,7 +22,7 @@ public class GetMasterAddressSentinelCommandExecutionStrategy implements Command
 
     @Override
     public void execute(ChannelHandlerContext channelContext, List<String> arguments) {
-        InetSocketAddress socketAddress = (InetSocketAddress) channelContext.channel().localAddress();
+        var socketAddress = (InetSocketAddress) channelContext.channel().localAddress();
         log.info("My local address is {}", socketAddress);
         channelContext.writeAndFlush(new RespArray(List.of(
                 new RespBulkString(socketAddress.getHostString()),
