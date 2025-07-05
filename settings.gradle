@@ -1,3 +1,4 @@
 rootProject.name = 'redis-netty-bridge'
 include 'redis-netty-bridge-core'
 include 'redis-netty-bridge-redis-insight-connector'
+include 'sample'

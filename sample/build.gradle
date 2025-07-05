@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'io.vitaliivorobii.redis.netty.bridge'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/vorobii-vitalii/resp-netty")
+        credentials {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // netty
+    implementation "io.netty:netty-all:5.0.0.Alpha2"
+
+    // logging facade
+    implementation "org.slf4j:slf4j-api:2.1.0-alpha1"
+
+    // logging impl
+    implementation 'ch.qos.logback:logback-core:1.5.13'
+    implementation 'ch.qos.logback:logback-classic:1.5.13'
+
+    implementation 'com.google.code.gson:gson:2.13.1'
+
+    implementation project(":redis-netty-bridge-core")
+    implementation 'io.github.vorobii-vitalii:resp-netty:1.1.0'
+}
+
+test {
+    useJUnitPlatform()
+}
