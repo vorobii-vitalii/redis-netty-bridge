@@ -11,8 +11,8 @@ public class StringArgParser implements CommandArgumentsParser<String> {
     @Override
     public Either<String, String> parse(ClientRequest request) {
         List<String> arguments = request.arguments();
-        if (arguments.isEmpty()) {
-            return Either.right("No key specified!");
+        if (arguments.size() != 1) {
+            return Either.right("Expected exactly one argument");
         }
         String key = arguments.getFirst();
         return Either.left(key);
