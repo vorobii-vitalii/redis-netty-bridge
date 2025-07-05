@@ -15,6 +15,18 @@ public class GetMasterAddressSentinelCommandExecutionStrategy implements Command
 
     public static final String GET_MASTER_ADDR_BY_NAME = "GET-MASTER-ADDR-BY-NAME";
 
+    private final LocalInetSocketAddressExtractor localInetSocketAddressExtractor;
+
+    public GetMasterAddressSentinelCommandExecutionStrategy(
+            LocalInetSocketAddressExtractor localInetSocketAddressExtractor
+    ) {
+        this.localInetSocketAddressExtractor = localInetSocketAddressExtractor;
+    }
+
+    public GetMasterAddressSentinelCommandExecutionStrategy() {
+        this(ctx -> (InetSocketAddress) ctx.channel().localAddress());
+    }
+
     @Override
     public boolean canHandle(ChannelHandlerContext channelHandlerContext, List<String> args) {
         return !args.isEmpty() && args.getFirst().equalsIgnoreCase(GET_MASTER_ADDR_BY_NAME);
@@ -22,7 +34,7 @@ public class GetMasterAddressSentinelCommandExecutionStrategy implements Command
 
     @Override
     public void execute(ChannelHandlerContext channelContext, List<String> arguments) {
-        var socketAddress = (InetSocketAddress) channelContext.channel().localAddress();
+        var socketAddress = localInetSocketAddressExtractor.extractLocalSocketAddress(channelContext);
         log.info("My local address is {}", socketAddress);
         channelContext.writeAndFlush(new RespArray(List.of(
                 new RespBulkString(socketAddress.getHostString()),
