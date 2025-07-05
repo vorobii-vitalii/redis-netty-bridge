@@ -13,6 +13,7 @@ import io.vitaliivorobii.redis.netty.bridge.command.select.SelectCommandExecutor
 import io.vitaliivorobii.redis.netty.bridge.command.sentinel.GetMasterAddressSentinelCommandExecutionStrategy;
 import io.vitaliivorobii.redis.netty.bridge.command.sentinel.SentinelCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.data.GetRatesDataStrategy;
+import io.vitaliivorobii.redis.netty.bridge.data.RandomNumberGetDataStrategy;
 import io.vitaliivorobii.redis.netty.bridge.server.RedisNettyBridge;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         GetDataStrategy getDataStrategy = new FirstMatchGetDataStrategy(
                 List.of(
-                        new GetRatesDataStrategy()
+                        new GetRatesDataStrategy(),
+                        new RandomNumberGetDataStrategy()
                 )
         );
         RedisCommandExecutor redisCommandExecutor = new CommandNameDelegatingCommandExecutor(Map.of(
