@@ -92,7 +92,7 @@ dependencies {
 
     implementation 'io.vavr:vavr:1.0.0-alpha-4'
 
-    implementation 'io.github.vorobii-vitalii:resp-netty:1.0.0'
+    implementation 'io.github.vorobii-vitalii:resp-netty:1.1.0'
 
 }
 

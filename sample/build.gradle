@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.13.1'
 
     implementation project(":redis-netty-bridge-core")
-    implementation 'io.github.vorobii-vitalii:resp-netty:1.0.0'
+    implementation 'io.github.vorobii-vitalii:resp-netty:1.1.0'
 }
 
 test {
