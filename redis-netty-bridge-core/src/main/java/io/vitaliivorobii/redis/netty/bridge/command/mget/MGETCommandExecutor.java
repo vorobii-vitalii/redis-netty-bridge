@@ -9,6 +9,6 @@ import java.util.List;
 public class MGETCommandExecutor extends GenericCommandExecutor<List<String>> {
 
     public MGETCommandExecutor(GetDataStrategy getDataStrategy) {
-        super(new ArrayArgsParser(), List.of(new MGETCommandExecutionStrategy(getDataStrategy)));
+        super(new ArrayArgsParser(), new MGETCommandExecutionStrategy(getDataStrategy));
     }
 }

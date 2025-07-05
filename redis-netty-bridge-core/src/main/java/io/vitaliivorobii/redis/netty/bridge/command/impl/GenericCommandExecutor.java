@@ -8,11 +8,19 @@ import io.vitaliivorobii.redis.netty.bridge.command.args.CommandArgumentsParser;
 import io.vitaliivorobii.redis.netty.bridge.domain.ClientRequest;
 import io.vitaliivorobii.resp.types.RespSimpleError;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GenericCommandExecutor<A> implements RedisCommandExecutor {
     private final CommandArgumentsParser<A> argumentsParser;
     private final List<CommandExecutionStrategy<A>> strategies;
+
+    public GenericCommandExecutor(
+            CommandArgumentsParser<A> argumentsParser,
+            CommandExecutionStrategy<A> strategy
+    ) {
+        this(argumentsParser, Collections.singletonList(strategy));
+    }
 
     public GenericCommandExecutor(
             CommandArgumentsParser<A> argumentsParser,
@@ -30,9 +38,11 @@ public class GenericCommandExecutor<A> implements RedisCommandExecutor {
             strategies.stream()
                     .filter(v -> v.canHandle(channelContext, arguments))
                     .findFirst()
-                    .ifPresentOrElse(strategy -> {
-                        strategy.execute(channelContext, arguments);
-                    }, () -> channelContext.writeAndFlush(new RespSimpleError("No strategy found for the command")));
+                    .ifPresentOrElse(
+                            strategy -> strategy.execute(channelContext, arguments),
+                            () -> channelContext.writeAndFlush(
+                                    new RespSimpleError("No strategy found for the command")
+                            ));
         } else {
             channelContext.writeAndFlush(new RespSimpleError(parseResult.get()));
         }
