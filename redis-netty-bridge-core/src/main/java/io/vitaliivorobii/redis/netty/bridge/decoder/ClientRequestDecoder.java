@@ -1,5 +1,6 @@
 package io.vitaliivorobii.redis.netty.bridge.decoder;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.MessageToMessageDecoder;
@@ -10,6 +11,7 @@ import io.vitaliivorobii.resp.types.RespDataType;
 
 import java.util.List;
 
+@ChannelHandler.Sharable
 public class ClientRequestDecoder extends MessageToMessageDecoder<RespDataType> {
 
     @Override

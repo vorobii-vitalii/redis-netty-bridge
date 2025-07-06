@@ -1,6 +1,6 @@
 # redis-netty-bridge
 
-redis-netty-bridge is a library that can be used for building Redis proxies (servers that implement Redis (RESP protocol) and capable of delegating commands processing to external resources)
+redis-netty-bridge is a library used for building Redis proxies (servers that implement RESP protocol (protocol on top of which Redis is built) and delegate commands processing to external resources)
 
 **Use case:**
 
@@ -8,11 +8,10 @@ redis-netty-bridge is a library that can be used for building Redis proxies (ser
 1. Redis cluster
 2. Daemon that constantly updates stock data in Redis
 3. HTTP Gateway microservice that provides stock data, stored in Redis, to clients
-4. stock-data-consumer - new microservice which need stock data for its business
+4. stock-data-consumer - microservice which need stock data for its business
 
-_stock-data-consumer_ has very strict latency requirements, because of this fetching data through HTTP gateway is not an option because that would lead to higher latency.
-stock-data-consumer will read data directly from Redis as well. 
-Since development team doesn't have direct access to Redis, to test new version of stock-data-consumer locally, development team is forced to start Redis locally, manually retrieve data for some products through gateway and populate local Redis with it, which takes significant amount of time.
+_stock-data-consumer_ has very strict latency requirements, therefore fetching data through HTTP gateway is not an option because that would lead to higher latency.
+stock-data-consumer reads stock data directly from Redis replica. Since development team doesn't have direct access to Redis, to test new version of stock-data-consumer locally, they need to start Redis locally, manually retrieve data for some products through gateway and populate local Redis with it, which takes significant amount of time.
 
 ![img.png](usecase.png)
 
@@ -27,6 +26,8 @@ It implements:
 2. Redis handshake
 3. Basic commands for Redis sentinel
 4. Correct order of messages processing, therefore support for pipelining is there
+5. Parsers for the most common commands
+6. Command processing framework open for extension
 
 **How to use the library?**
 
@@ -102,3 +103,5 @@ public class Main {
     }
 }
 ```
+3. Test
+![img.png](img.png)
