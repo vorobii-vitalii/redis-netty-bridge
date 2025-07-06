@@ -12,6 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.decoder.ClientRequestDecoder;
 import io.vitaliivorobii.redis.netty.bridge.handler.InboundClientRedisRequestHandler;
+import io.vitaliivorobii.redis.netty.bridge.handler.OrderedRequestHandler;
 import io.vitaliivorobii.resp.decoder.ByteToRespMessageDecoder;
 import io.vitaliivorobii.resp.decoder.DefaultRespDecoder;
 import io.vitaliivorobii.resp.encoder.DefaultRespEncoder;
@@ -46,6 +47,7 @@ public class RedisNettyBridge {
                         ));
                         ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
                         ch.pipeline().addLast(new ClientRequestDecoder());
+                        ch.pipeline().addLast(new OrderedRequestHandler());
                         ch.pipeline().addLast(new InboundClientRedisRequestHandler(redisCommandExecutor));
                     }
                 });

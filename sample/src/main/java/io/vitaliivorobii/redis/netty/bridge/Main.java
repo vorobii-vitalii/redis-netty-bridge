@@ -18,6 +18,7 @@ import io.vitaliivorobii.redis.netty.bridge.server.RedisNettyBridge;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
@@ -30,6 +31,7 @@ public class Main {
                         new RandomNumberGetDataStrategy()
                 )
         );
+
         RedisCommandExecutor redisCommandExecutor = new CommandNameDelegatingCommandExecutor(Map.of(
                 "HELLO", new HelloCommandExecutor(),
                 "SELECT", new SelectCommandExecutor(),
