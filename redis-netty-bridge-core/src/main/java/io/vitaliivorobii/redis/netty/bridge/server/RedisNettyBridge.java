@@ -11,6 +11,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.vitaliivorobii.redis.netty.bridge.command.RedisCommandExecutor;
 import io.vitaliivorobii.redis.netty.bridge.decoder.ClientRequestDecoder;
+import io.vitaliivorobii.redis.netty.bridge.handler.CloseOnExceptionHandler;
 import io.vitaliivorobii.redis.netty.bridge.handler.InboundClientRedisRequestHandler;
 import io.vitaliivorobii.redis.netty.bridge.handler.OrderedRequestHandler;
 import io.vitaliivorobii.resp.decoder.ByteToRespMessageDecoder;
@@ -32,6 +33,12 @@ public class RedisNettyBridge {
     public ChannelFuture start() throws InterruptedException {
         NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap();
+        DefaultRespDecoder respDecoder = new DefaultRespDecoder();
+        DefaultRespEncoder respEncoder = new DefaultRespEncoder();
+        CloseOnExceptionHandler closeOnExceptionHandler = new CloseOnExceptionHandler();
+        ClientRequestDecoder clientRequestDecoder = new ClientRequestDecoder();
+        InboundClientRedisRequestHandler inboundClientRedisRequestHandler =
+                new InboundClientRedisRequestHandler(redisCommandExecutor);
         serverBootstrap.group(eventLoopGroup)
                 .channel(NioServerSocketChannel.class)
                 .localAddress(new InetSocketAddress(port))
@@ -39,16 +46,13 @@ public class RedisNettyBridge {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new ByteToRespMessageDecoder(
-                                new DefaultRespDecoder()
-                        ));
-                        ch.pipeline().addLast(new RespMessageToByteEncoder(
-                                new DefaultRespEncoder()
-                        ));
+                        ch.pipeline().addLast(new ByteToRespMessageDecoder(respDecoder));
+                        ch.pipeline().addLast(new RespMessageToByteEncoder(respEncoder));
                         ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
-                        ch.pipeline().addLast(new ClientRequestDecoder());
+                        ch.pipeline().addLast(clientRequestDecoder);
                         ch.pipeline().addLast(new OrderedRequestHandler());
-                        ch.pipeline().addLast(new InboundClientRedisRequestHandler(redisCommandExecutor));
+                        ch.pipeline().addLast(inboundClientRedisRequestHandler);
+                        ch.pipeline().addLast(closeOnExceptionHandler);
                     }
                 });
         ChannelFuture channelFuture = serverBootstrap.bind().sync();

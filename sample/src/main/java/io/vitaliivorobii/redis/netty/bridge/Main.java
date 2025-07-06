@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
-    public static final int PORT = 7000;
+    public static final int PORT = 7001;
 
     public static void main(String[] args) throws InterruptedException {
         GetDataStrategy getDataStrategy = new FirstMatchGetDataStrategy(
