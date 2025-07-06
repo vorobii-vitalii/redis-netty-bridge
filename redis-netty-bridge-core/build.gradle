@@ -27,7 +27,7 @@ publishing {
             }
             pom {
                 name = 'redis-netty-bridge-core'
-                description = 'Implementation of REdis Serialization Protocol(RESP) in Netty '
+                description = 'Redis netty bridge core'
                 url = 'https://github.com/vorobii-vitalii/redis-netty-bridge'
                 licenses {
                     license {
@@ -83,6 +83,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:4.0.0-M1'
+    testImplementation 'org.mockito:mockito-core:5.18.0'
 
     // netty
     implementation "io.netty:netty-all:5.0.0.Alpha2"
@@ -90,10 +91,9 @@ dependencies {
     // logging facade
     implementation "org.slf4j:slf4j-api:2.1.0-alpha1"
 
-    // https://mvnrepository.com/artifact/io.vavr/vavr
     implementation 'io.vavr:vavr:1.0.0-alpha-4'
 
-    implementation 'io.github.vorobii-vitalii:resp-netty:1.0.0'
+    implementation 'io.github.vorobii-vitalii:resp-netty:1.1.0'
 
 }
 
