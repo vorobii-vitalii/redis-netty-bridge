@@ -26,12 +26,12 @@ public class OrderedRequestHandler extends ChannelHandlerAdapter {
 
     @Override
     public void flush(ChannelHandlerContext ctx) {
+        ctx.flush();
         if (messageQueue.isEmpty()) {
             isProcessing = false;
             ctx.read();
         } else {
             ctx.fireChannelRead(messageQueue.pollFirst());
         }
-        ctx.flush();
     }
 }
